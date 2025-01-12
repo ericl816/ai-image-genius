@@ -22,12 +22,12 @@ export const generateImage = async (prompt: string, apiKey: string): Promise<Gen
         "Authorization": `Token ${apiKey}`,
       },
       body: JSON.stringify({
-        version: "39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b",
+        version: "2b017d9b67edd2ee1401238df49d75da53c523f36e363881e057f5dc3ed3c5b2",
         input: {
           prompt,
           negative_prompt: "ugly, blurry, low quality, distorted",
           num_outputs: 1,
-          guidance_scale: 7.5,
+          scheduler: "K_EULER",
           num_inference_steps: 50,
         },
       }),
