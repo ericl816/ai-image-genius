@@ -33,16 +33,17 @@ export const generateImage = async (prompt: string, apiKey: string): Promise<Gen
       }),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      const errorData = await response.json();
       if (response.status === 402) {
-        toast.error("Billing setup required for Replicate API. Please visit https://replicate.com/account/billing to set up billing.");
-        throw new Error("Billing setup required for Replicate API");
+        const errorMessage = "Billing setup required. Please visit https://replicate.com/account/billing to set up billing for your Replicate account. After setting up billing, try again.";
+        toast.error(errorMessage);
+        throw new Error(errorMessage);
       }
-      throw new Error(errorData.detail || "Failed to generate image");
+      throw new Error(data.detail || "Failed to generate image");
     }
 
-    const data = await response.json();
     return data;
   } catch (error) {
     if (error instanceof Error) {
