@@ -15,6 +15,12 @@ export interface GenerationResponse {
 
 export const generateImage = async (prompt: string, apiKey: string): Promise<GenerationResponse> => {
   try {
+    if (!apiKey || apiKey.trim() === "") {
+      const errorMessage = "Please enter your Replicate API key";
+      toast.error(errorMessage);
+      throw new Error(errorMessage);
+    }
+
     const response = await fetch(REPLICATE_API_URL, {
       method: "POST",
       headers: {
@@ -41,6 +47,13 @@ export const generateImage = async (prompt: string, apiKey: string): Promise<Gen
         toast.error(errorMessage);
         throw new Error(errorMessage);
       }
+      
+      if (response.status === 401) {
+        const errorMessage = "Invalid API key. Please check your Replicate API key and try again. You can find your API key at https://replicate.com/account/api-tokens";
+        toast.error(errorMessage);
+        throw new Error(errorMessage);
+      }
+      
       throw new Error(data.detail || "Failed to generate image");
     }
 
